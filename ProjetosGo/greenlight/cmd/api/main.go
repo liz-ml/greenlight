@@ -30,6 +30,7 @@ func main () {
 	//metros na CLI sem alterar o código fonte
 	flag.IntVar(&cfg.port, "port", 4000, "API server port")
 	flag.StringVar(&cfg.env,"env", "development", "Environment (development|staging|production)")
+
 	flag.Parse() //lê os argumentos passados na CLI
 	// go run main.go -h ou --help exibe ajuda
 
@@ -44,7 +45,9 @@ func main () {
 
 	mux := http.NewServeMux() //router padrão que mapeia paths para handlers (função que recebe http.ResponseWriter e *http.Request; permite criar múltilplos routers independentes (versionamento de API); + fácil de testar
 	mux.HandleFunc("/v1/healthcheck", app.healthcheckHandler) //pre-fixing url (v1, v2) facilita o versionamento
-	mux.HandleFunc("v1/movies", app.listMoviesHandler)
+
+	mux.HandleFunc("/v1/movies", app.createMoviesHandler)
+
 
 	srv := &http.Server{
 		Addr: fmt.Sprintf(":%d", cfg.port),
