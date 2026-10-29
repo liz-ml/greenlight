@@ -43,15 +43,13 @@ func main () {
 		logger: logger,
 	}
 
-	mux := http.NewServeMux() //router padrão que mapeia paths para handlers (função que recebe http.ResponseWriter e *http.Request; permite criar múltilplos routers independentes (versionamento de API); + fácil de testar
-	mux.HandleFunc("/v1/healthcheck", app.healthcheckHandler) //pre-fixing url (v1, v2) facilita o versionamento
+	//mux := http.NewServeMux() //router padrão que mapeia paths para handlers (função que recebe http.ResponseWriter e *http.Request; permite criar múltilplos routers independentes (versionamento de API); + fácil de testar
 
-	mux.HandleFunc("/v1/movies", app.createMoviesHandler)
 
 
 	srv := &http.Server{
 		Addr: fmt.Sprintf(":%d", cfg.port),
-		Handler: mux,
+		Handler: app.routes(),
 		IdleTimeout: time.Minute,
 		ReadTimeout: 10 * time.Second,
 		WriteTimeout: 30 * time.Second,

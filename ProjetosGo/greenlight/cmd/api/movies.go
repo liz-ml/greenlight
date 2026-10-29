@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"greenlight.liz.net/internal"
 	"encoding/json"
+	"fmt"
 )
 
 var movies = []internal.Movie {
@@ -35,5 +36,15 @@ func (app *application) createMoviesHandler(w http.ResponseWriter, r *http.Reque
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newMovie)
+}
+
+func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := app.readIDParam(r)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	//Fprintf formata e envia para um fluxo de saída (web, arquivo)
+	fmt.Fprintf(w, "show the details of movie %d\n", id)
 }
 
