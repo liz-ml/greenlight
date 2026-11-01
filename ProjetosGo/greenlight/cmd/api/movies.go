@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"greenlight.liz.net/internal"
 	"encoding/json"
-	"fmt"
+	"time"
+	
 )
 
 var movies = []internal.Movie {
@@ -12,6 +13,9 @@ var movies = []internal.Movie {
 	ID: 1,
 	Title: "Toy Story",
 	Author: "Liz",
+	Genres: []string{"action", "drama"}, 
+	Version: 1,
+	CreatedAt: time.Now(),
 	},
 }
 
@@ -44,7 +48,21 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 		http.NotFound(w, r)
 		return
 	}
-	//Fprintf formata e envia para um fluxo de saída (web, arquivo)
-	fmt.Fprintf(w, "show the details of movie %d\n", id)
+	
+	var movieFilter internal.Movie
+
+	for _, movie := range movies {
+		if movie.ID == id {
+			movieFilter = movie
+			break
+		}
+	}
+
+	err = app.writeJSON(w, http.StatusOK, movieFilter, nil)
+	if err != nil {
+		app.logger.Println(err)
+		http.Error(w, "The server encountered a problem and could not process your request", http.StatusInternalServerError)
+	}
 }
+
 
