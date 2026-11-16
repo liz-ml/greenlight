@@ -1,6 +1,7 @@
 package main
 
-import ( "flag"
+import ( 
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,6 +24,7 @@ type application struct { //agrupa dependências globais
 	config config
 	logger *log.Logger
 }
+
 func main () {
 	var cfg config
 	// liga a flag -port a variavel cfg.port

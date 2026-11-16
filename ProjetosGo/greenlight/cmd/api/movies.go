@@ -1,11 +1,12 @@
 package main
 
 import (
-	"net/http"
-	"greenlight.liz.net/internal"
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"time"
-	
+
+	"greenlight.liz.net/internal"
 )
 
 var movies = []internal.Movie {
@@ -33,6 +34,8 @@ func (app *application) createMoviesHandler(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "JSON INVÁLIDO", http.StatusBadRequest)
 		return
 	}
+
+	fmt.Printf(w, "%+v\n", input)
 
 	newMovie.ID = int64(len(movies)) + 1
 
